@@ -56,7 +56,8 @@ For PCA, we used the subset of unrelated samples and performed LD-pruning using 
 
 The PCA results colored according to ancestry were plotted using the PCAviz package for R, take a look at the R markdown ``RunningPCAviz.Rmd``
 You can also make nice PCA images and a 3D PCA using the R script ``3D_PCA.R``
-![ Alt text](3dAnimatedScatterplot.gif) 
+![ Alt text](3dAnimatedScatterplot.gif)/ ! [](3dAnimatedScatterplot.gif) 
+  
 **3. Estimation of global ancestry using ADMIXTURE**
 
 
