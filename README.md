@@ -8,16 +8,16 @@ We are providing a shell script for every step, and additional R and Python scri
 **Pipeline**
 
 1. Identify relatedness between samples using KING
-2. Principal Component Analysis (PCA) using PLINK 1.9 [http://www.cog-genomics.org/plink2]() and EIGENSOFT(v7.2.1) [https://github.com/DReichLab/EIG/archive/v7.2.1.tar.gz]
-3. Estimation of global ancestry using ADMIXTURE [https://dalexander.github.io/admixture/]()
+2. Principal Component Analysis (PCA) using PLINK 1.9 and EIGENSOFT(v7.2.1)
+3. Estimation of global ancestry using ADMIXTURE
 4. Phasing genomes using SHAPEIT2
-5. Local ancestry inference using RFMix
+5. Local ancestry inference using RFMix 
 6. Identification of Identitical by Descent (IBD) segments using Hap-IBD
 
 ________
 
 Our dataset comprised both *related* and *unrelated* individuals. Having related individuals in the same dataset improves *Phasing* and *IBD* detection.
-However, certain analyses such as PCA or ADMIXTURE need to be performed in Unrelated individuals. If you know your dataset contains related individuals, I recommend doing some additional quality control steps using PLINK.
+However, certain analyses such as PCA or ADMIXTURE need to be performed in Unrelated individuals. If you know your dataset contains related individuals, I recommend doing some additional quality control steps using PLINK 1.9 [http://www.cog-genomics.org/plink2]().
 
 First, edit your <file>.fam to reflect the Paternal and Maternal ID for each sample, and give each known family, the same Family ID (first column of <file>.fam). 
 If the father or the mother is in the dataset, their Sample ID needs to match the Father or Mother ID of their offspring.
@@ -58,25 +58,30 @@ The PCA results colored according to ancestry were plotted using the PCAviz pack
 You can also make nice PCA images and a 3D PCA using the R script ``3D_PCA.R``
 ![ Alt text](3dAnimatedScatterplot.gif) / ! [](3dAnimatedScatterplot.gif)  
   
+  
 **3. Estimation of global ancestry using ADMIXTURE**
 
+We calculated global ancestry using ADMIXTURE (v.1.3.0) [https://dalexander.github.io/admixture/]() with the same LD-prunned dataset we generated for the PCA.
+A shell script is provided in ``ADMIXTURE.sh``. This script performes an unsupervised analysis modeling from one to ten ancestral populations (K = 1 – 10) using the random seed option and replicating each calculation 20 times. We selected the run with the best Loglikehood value for each K and compared the Cross Validation (cv) error values to determine the model with the lowest cv value. 
+  ```
+  chmod u+x ADMIXTURE.sh
+  ```
+  ```
+  ./ADMIXTURE.sh
+  ```
 
-
-We calculated global ancestry using ADMIXTURE (v.1.3.0)[37] independently for the unrelated TANGL individuals (n=566) and for the TANGL.AFR.EUR.NAT-Unrelated cohort. As recommended by ADMIXTURE, PLINK (v.1.9)[31,32] was used to perform pair-phased linkage disequilibrium (LD) pruning; excluding variants with an r2 value of greater than 0.2 with any other SNP within a 50-SNP sliding window, advancing by 10 SNPs each time (--indep-pairwise 50 10 0.2). The LD-pruned dataset contained 203,810 variants. We then performed an unsupervised analysis modeling from one to ten ancestral populations (K = 1 – 10) using the random seed option and replicating each calculation 20 times. We selected the run with the best Loglikehood value for each K and compared the Cross Validation (cv) error values to determine the model with the lowest cv value. Ancestral proportion statistics of mean and standard deviation were calculated using the statistical software R[38]. 
-
-
+  
 **4. Phasing genomes using SHAPEIT2**
 
-We phased the combined TANGL.AFR.EUR.NAT dataset with SHAPEIT (v.2.r900)[41] using the haplotype reference panel of the 1000GP. We used the parameters –duohmm and a window of 5MB (-W 5), which takes advantage of the inclusion of families, pedigree structure and the large amount of IBD shared by close relatives, leading to increased accuracy
+The best phasing results were obtained by pahsing our TANGL dataset along with the European, African and Native american genomes, and using the haplotype reference panel of the 1000GP. We used SHAPEIT (v.2.r900)[41] [https://mathgen.stats.ox.ac.uk/genetics_software/shapeit/shapeit.html]
+Since we have multiple related individuals, we used the parameters –duohmm and a window of 5MB (-W 5), which takes advantage of the inclusion of families, pedigree structure and the large amount of IBD shared by close relatives, leading to increased accuracy
+ 
+  
 
 
 **5. Local ancestry inference using RFMix**
 
- We used the PopPhased version of RFMix (v1.5.4)[43] to estimate the local ancestry using the following flags: -w 0.2, -e 1, -n 5, --use-reference-panels-in-EM, --forward-backward as recommended by Martin et al[3] for estimating local ancestry in admixed populations.
-
-We implemented protocols similar to those previously developed for ancestry estimation in admixed populations. We recommend the following repository to identify local ancestry 
-[https://github.com/armartin/ancestry_pipeline.git]()
-
+We implemented protocols similar to those previously developed for ancestry estimation in admixed populations. We recommend the following repository to identify local ancestry [https://github.com/armartin/ancestry_pipeline.git]()
 
 
 **6. Identification of Identitical by Descent (IBD) segments using Hap-IBD**
