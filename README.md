@@ -8,8 +8,8 @@ We are providing a shell script for every step, and additional R and Python scri
 **Pipeline**
 
 1. Identify relatedness between samples using KING
-2. Principal Component Analysis (PCA)
-3. Estimation of global ancestry using ADMIXTURE
+2. Principal Component Analysis (PCA) using PLINK 1.9 [http://www.cog-genomics.org/plink2]() and EIGENSOFT(v7.2.1) [https://github.com/DReichLab/EIG/archive/v7.2.1.tar.gz]
+3. Estimation of global ancestry using ADMIXTURE [https://dalexander.github.io/admixture/]()
 4. Phasing genomes using SHAPEIT2
 5. Local ancestry inference using RFMix
 6. Identification of Identitical by Descent (IBD) segments using Hap-IBD
@@ -17,7 +17,7 @@ We are providing a shell script for every step, and additional R and Python scri
 ________
 
 Our dataset comprised both *related* and *unrelated* individuals. Having related individuals in the same dataset improves *Phasing* and *IBD* detection.
-However, certain analyses such as PCA or ADMIXTURE need to be performed in Unrelated individuals. If you know your dataset contains related individuals, I recommend doing some additional quality control steps using PLINK 1.9 [http://www.cog-genomics.org/plink2]()
+However, certain analyses such as PCA or ADMIXTURE need to be performed in Unrelated individuals. If you know your dataset contains related individuals, I recommend doing some additional quality control steps using PLINK.
 
 First, edit your <file>.fam to reflect the Paternal and Maternal ID for each sample, and give each known family, the same Family ID (first column of <file>.fam). 
 If the father or the mother is in the dataset, their Sample ID needs to match the Father or Mother ID of their offspring.
