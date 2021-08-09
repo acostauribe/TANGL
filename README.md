@@ -46,8 +46,7 @@ king -b <file-prefix>.bed --related --degree 3
 
 **2. Principal Component Analysis (PCA)**
 
-For PCA, we used the subset of unrelated samples and performed LD-pruning using PLINK to exclude variants with an r2 value of greater than 0.2 with any other SNP within a 50-SNP sliding window, advancing by 10 SNPs each time. Then, we performed a PCA using the smartpca package from EIGENSOFT(v7.2.1) [https://github.com/DReichLab/EIG/archive/v7.2.1.tar.gz] We performed 3 outlier removal iterations (numoutlieriter: 3) and flag “altnormstyle: NO” to match EIGENSTRAT normalization formulas. 
-  you can open the script ``PCA_with_MAF_restrictions.sh`` in any text editor and set the minor allele frequency (MAF) thresholds you want for your analyses. 
+For PCA, we used the subset of unrelated samples and performed LD-pruning using PLINK to exclude variants with an r2 value of greater than 0.2 with any other SNP within a 50-SNP sliding window, advancing by 10 SNPs each time. Then, we performed a PCA using the smartpca package from EIGENSOFT(v7.2.1) [https://github.com/DReichLab/EIG/archive/v7.2.1.tar.gz]. You can open the script ``PCA_with_MAF_restrictions.sh`` in any text editor and set the minor allele frequency (MAF) thresholds you want for your analyses. 
   ```
   chmod u+x PCA_with_MAF_restrictions.sh
   ```
@@ -55,10 +54,9 @@ For PCA, we used the subset of unrelated samples and performed LD-pruning using 
   ./PCA_with_MAF_restrictions.sh
   ```
 
-  
-  
-  The PCA results were plotted using the PCAviz package[45] for R. For the PCA with the Ancestral populations we retained variants with MAF > 10%. For the PCA of the TANGL-unrelated cohort we extracted a common variant set, retaining those with MAF >10%, and then a lower frequency variant set, keeping only variants with MAF between 5 – 10%. 
-
+The PCA results colored according to ancestry were plotted using the PCAviz package for R, take a look at the R markdown ``RunningPCAviz.Rmd``
+You can also make nice PCA images and a 3D PCA using the R script ``3D_PCA.R``
+![ Alt text](3dAnimatedScatterplot.gif) / ! [](3dAnimatedScatterplot.gif)
 
 **3. Estimation of global ancestry using ADMIXTURE**
 
