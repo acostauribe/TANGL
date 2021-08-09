@@ -1,0 +1,319 @@
+---
+title: "PCA plotting of the COL.EUR.AFR.NAT"
+author: "Juliana Acosta-Uribe"
+date: "5/4/2020"
+output:
+  html_document:
+    df_print: paged
+---
+
+# 1. Install and Load Packages
+
+The PCAviz R package provides a simple interface for quickly creating visually compelling plots from Principal Components Analysis (PCA) and accompanying data.
+
+```{r setup, include=FALSE}
+#install.packages("devtools")
+#devtools::install_github("NovembreLab/PCAviz",build_vignettes = TRUE)
+
+library(PCAviz)
+library(ggplot2) # makes pretty plots
+library(cowplot)
+```
+
+#2. Load the data and the PCA results
+
+Load eigenvectors
+
+```{r echo=TRUE}
+Prefix <- "PCAviz"
+nPCs <- 10 # NUmber of PCs that were calculated
+
+PCA <-read.table(paste(Prefix, ".eigs", sep = "")) #read table
+
+names(PCA) <- c("ID", paste("PC", (1:nPCs), sep = ""), "case.control") #Add a Header
+
+PCA <- PCA [, 1:(nPCs + 1)] #remove Case.control column
+```
+
+Load and edit eigenvalues
+
+```{r echo=TRUE}
+eig.val <- sqrt(unlist(read.table(paste(Prefix, ".eval", sep = ""))) [1:nPCs]) # eig.val = square root of eigenvalues
+
+sum.eig <- sum(unlist(read.table(paste(Prefix, ".eval", sep = "")))) #add all eigevalues
+
+```
+
+Load and edit snpweight matrix
+
+```{r echo=TRUE}
+snpeigs <-read.table(paste(Prefix, ".snpeigs", sep = ""))
+
+names(snpeigs) <-c("ID", "chr", "pos", paste("PC", (1:nPCs), sep ="")) #Add a Header
+
+snpeigs$chr <- factor(snpeigs$chr)
+
+rownames (snpeigs) <- snpeigs$ID
+
+snpeigs <- snpeigs[, -1]
+```
+
+Edit the individual IDs in the PCA file
+
+```{r echo=TRUE}
+tmp <- unlist(sapply(as.character(PCA$ID), strsplit, ":"))
+
+ids <- tmp[seq(2, length(tmp), by = 2)]
+
+PCA$ID <- ids
+```
+
+Assign a Goup or Cluster to each Individual
+
+```{r echo=TRUE}
+ancestry <- read.table("ancestry_proportions.txt", header =TRUE)
+
+ancestry_unord <- ancestry$Group[match(ids, ancestry$ID)]
+
+PCA <- as.data.frame(PCA)
+
+PCA <-cbind(PCA, ancestry_unord)
+
+names(PCA)[ncol(PCA)] <- "sample" 
+```
+
+Add the ancestry proportions of each individual (these were calculated with RFMix)
+You can add a column to later modify the color that each popultion will have
+```{r echo=TRUE}
+
+EUR <- ancestry$EUR[match(ids, ancestry$ID)]
+AFR <- ancestry$AFR[match(ids, ancestry$ID)]
+NAT <- ancestry$NAT[match(ids, ancestry$ID)]
+Ancestry <- ancestry$Ancestry[match(ids, ancestry$ID)]
+colors <- ancestry$color[match(ids, ancestry$ID)]
+
+PCA <-cbind(PCA, EUR, AFR, NAT, Ancestry, colors)
+```
+
+
+
+# 3. Build the PCAviz object
+
+```{r echo=TRUE}
+
+col <- pcaviz(dat = PCA,
+              sdev = eig.val,
+              var = sum.eig,
+              rotation = snpeigs)
+
+col <- pcaviz_abbreviate_var(col, "sample")
+
+```
+
+
+#4. Graph the PCA
+
+Edit the style for  graphs
+```{r echo=TRUE}
+geom.point.summary.params <-list(shape = 16, 
+                                 stroke = 1,
+                                 size = 5,
+                                 alpha = 1,
+                                 show.legend = FALSE)
+#give custom colors to each sample
+
+clrs <-c(with(col$data,tapply(as.character(colors),sample,function (x) x[1])))
+names(clrs) <- NULL
+```
+
+Plot the PCA!!
+
+```{r echo=TRUE}
+
+plot (col, 
+      label="sample",
+      colors= clrs ,
+      abbreviated.label = FALSE ,
+      geom.text.params = list(size = 3,fontface = "plain",na.rm = TRUE),
+      geom.point.summary.params = list(shape = 16,stroke = 1,size = 10,
+                                       show.legend = FALSE,alpha = 0.6),
+      geom.text.summary.params = list(size = 3.25,color = "black",
+                                      show.legend = FALSE,alpha = 0.8))
+```
+
+
+You can arrange multiple plots as a grid
+
+```{r echo=TRUE}
+
+plot1 <- plot (col, 
+              label="sample",
+              abbreviated.label = FALSE,
+              colors= clrs,
+              coords = paste0("PC", c(1,2)),
+              geom.point.summary.params = geom.point.summary.params,
+              scale.pc.axes = 0.6)
+
+plot2 <- plot(col,
+              label="sample",
+              abbreviated.label = FALSE,
+              colors= clrs,
+              coords = paste0("PC", c(1,3)),
+              geom.point.summary.params = geom.point.summary.params,
+              scale.pc.axes = 0.6)
+
+plot3 <- plot(col,
+              label="sample",
+              abbreviated.label = FALSE,
+              colors= clrs,
+              coords = paste0("PC", c(2,3)),
+              geom.point.summary.params = geom.point.summary.params,
+              scale.pc.axes = 0.6)
+
+plot4 <- plot(col,
+              label="sample",
+              abbreviated.label = FALSE,
+              colors= clrs,
+              coords = paste0("PC", c(3,4)),
+              geom.point.summary.params = geom.point.summary.params,
+              scale.pc.axes = 0.6)
+
+plot_grid(plot1, plot2, plot3, plot4)
+```
+
+As an alternative visualization, it can be helpful to see the distribution of PC coordinates per population for each labeled group in the data
+
+```{r echo=TRUE}
+
+pcaviz_violin(col,
+              pc.dims = paste0("PC", c(1:3)),
+              plot.grid.params = list(nrow=3))
+```
+
+it is useful to inspect the PC loadings to ensure that they broadly represent variation across the genome, rather than one or a small number of genomic regions
+
+```{r echo=TRUE}
+for (i in 1:5) {
+  plotname <- paste ("plot", i, sep = "")
+  plot <-pcaviz_loadingsplot(col,
+                             pc.dim = paste0("PC", i),
+                             min.rank = 0.8, gap = 200, color = "chr",
+                             geom.point.params = list(show.legend = FALSE)) +
+                            xlab("SNPs") + ylab (paste0("PC", i, " loading"))
+                            assign(plotname, plot)
+}
+
+plot <- pcaviz_loadingsplot(col,
+                             pc.dim = paste0("PC", 1),
+                             min.rank = 0.8, gap = 200, color = "chr") +
+                            guides(color = guide_legend(nrow = 2, byrow = TRUE)) +
+                            theme(legend.position = "bottom",
+                                  legend.justification = "center")
+                            
+plot_legend <- get_legend(plot)
+
+prow <- plot_grid(plot1, plot2, plot3, plot4, plot5,
+                  nrow = 5,
+                  align = "vh")
+
+plot_grid(prow, plot_legend, ncol = 1, rel_heights = c(1, .2))
+
+```
+
+Create an Scree plot to represent the variation explained by each PC
+
+```{r echo=TRUE}
+screeplot(col, type = "pve") +
+  ylim(0, 0.12) +
+  ylab("Proportion of Variance Explained") +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+  theme(axis.line = element_line(size = 1, linetype = "solid"))
+```
+
+
+#5. Analyze PCA according to ancestry percentages
+
+
+plot_eur <- plot(col, 
+                 draw.points = TRUE, 
+                 color = "EUR", 
+                 group = NULL,
+                 shape = "Ancestry")
+
+plot_afr <- plot(col, 
+                 draw.points = TRUE, 
+                 color= "AFR", 
+                 group = NULL,
+                 shape = "Ancestry")
+
+plot_nat <- plot(col, 
+                 draw.points = TRUE, 
+                 color= "NAT", 
+                 group = NULL,
+                 shape = "Ancestry")
+
+plot_grid(plot_nat,plot_eur,plot_afr,labels = c("A", "B", "C"), nrow=1)
+
+
+
+Analyze correlation of PC1 and PC2 with each specific Ancestry
+
+
+
+# Plot European Ancestry
+plotEUR.PC1 <- plot(col,
+                    abbreviated.label = FALSE,
+                    coords = c("EUR","PC1"),
+                    colors= clrs,
+                    group = NULL,
+                    show.legend = FALSE)
+
+plotEUR.PC2 <- plot(col,
+                    abbreviated.label = FALSE,
+                    coords = c("EUR","PC2"),
+                    colors= clrs,
+                    group = NULL,
+                    show.legend = FALSE)
+
+plotEUR <-plot_grid(plotEUR.PC1 , plotEUR.PC2, labels = c("A","B"))
+
+
+# Plot African Ancestry
+plotAFR.PC1 <- plot(col,
+                    abbreviated.label = FALSE,
+                    coords = c("AFR","PC1"),
+                    colors= clrs,
+                    group = NULL,
+                    show.legend = FALSE)
+
+plotAFR.PC2 <- plot(col,
+                    abbreviated.label = FALSE,
+                    coords = c("AFR","PC2"),
+                    colors= clrs,
+                    group = NULL,
+                    show.legend = FALSE)
+
+plotAFR <-plot_grid(plotAFR.PC1 , plotAFR.PC2, labels = c("A","B"))
+
+
+# Plot Native American Ancestry
+plotNAT.PC1 <- plot(col,
+                    abbreviated.label = FALSE,
+                    coords = c("NAT","PC1"),
+                    colors= clrs,
+                    group = NULL,
+                    show.legend = FALSE)
+
+plotNAT.PC2 <- plot(col,
+                    abbreviated.label = FALSE,
+                    coords = c("NAT","PC2"),
+                    colors= clrs,
+                    group = NULL,
+                    show.legend = FALSE)
+
+plotNAT <-plot_grid(plotNAT.PC1 , plotNAT.PC2, labels = c("A","B"))
+
+
+plot_grid(plotEUR, plotAFR, plotNAT, ncol = 1)
+
+
