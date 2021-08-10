@@ -46,7 +46,7 @@ king -b <file-prefix>.bed --related --degree 3
 
 **2. Principal Component Analysis (PCA)**
 
-For PCA, we used the subset of unrelated samples and performed LD-pruning using PLINK to exclude variants with an r2 value of greater than 0.2 with any other SNP within a 50-SNP sliding window, advancing by 10 SNPs each time. Then, we performed a PCA using the smartpca package from EIGENSOFT(v7.2.1) [https://github.com/DReichLab/EIG/archive/v7.2.1.tar.gz]. You can open the script ``PCA_with_MAF_restrictions.sh`` in any text editor and set the minor allele frequency (MAF) thresholds you want for your analyses. 
+For PCA, we used the subset of unrelated samples and performed LD-pruning using PLINK to exclude variants with an r2 value of greater than 0.2 with any other SNP within a 50-SNP sliding window, advancing by 10 SNPs each time. Then, we performed a PCA using the smartpca package from EIGENSOFT(v7.2.1) [https://github.com/DReichLab/EIG/archive/v7.2.1.tar.gz]. You can open the script [PCA_with_MAF_restrictions.sh](PCA_with_MAF_restrictions.sh) in any text editor and set the minor allele frequency (MAF) thresholds you want for your analyses. 
   ```
   chmod u+x PCA_with_MAF_restrictions.sh
   ```
