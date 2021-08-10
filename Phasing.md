@@ -1,5 +1,9 @@
 **PHASING GENOMIC DATA**
-
+_
+AUG2021: Juliana Acosta-Uribe
+All rights reserved
+Copyright: UCSB
+_
 
 **I. PREP YOUR FILES**
 
