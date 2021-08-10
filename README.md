@@ -76,7 +76,7 @@ A shell script is provided in ``ADMIXTURE.sh``. This script performes an unsuper
 The best phasing results were obtained by pahsing our TANGL dataset along with the European, African and Native american genomes, and using the haplotype reference panel of the 1000GP. We used SHAPEIT (v.2.r900)[41] [https://mathgen.stats.ox.ac.uk/genetics_software/shapeit/shapeit.html]
 Since we have multiple related individuals, we used the parameters –duohmm and a window of 5MB (-W 5), which takes advantage of the inclusion of families, pedigree structure and the large amount of IBD shared by close relatives, leading to increased accuracy
  
-  
+ [a relative link](Phasing.md)
 
 
 **5. Local ancestry inference using RFMix**
