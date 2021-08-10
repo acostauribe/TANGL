@@ -81,7 +81,7 @@ Since we have multiple related individuals, we used the parameters –duohmm and
 
 **5. Identification of Identitical by Descent (IBD) segments using Hap-IBD**
 
-If any of the disease-conferring or risk-associated variants were shared by two or more unrelated individuals, we used hap-IBD v1.0 to search for identity by descent (IBD) around the locus. This software detects IBD of 2cM and highers. Hap-IBD can also detect Autozygosity (homozygosity by descent).
+If any of the disease-conferring or risk-associated variants were shared by two or more unrelated individuals, we used hap-IBD v1.0 to search for identity by descent (IBD) around the locus. This software detects IBD of 2cM and highers. Hap-IBD can also detect Autozygosity (homozygosity by descent). [https://github.com/browning-lab/hap-ibd]()
 
   Here is a markdown of detecting IBD with Hap-IBD
   [Run_Hap-IBD.md](Run_Hap-IBD.md)
