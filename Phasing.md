@@ -1,9 +1,8 @@
 **PHASING GENOMIC DATA**
-_
-AUG2021: Juliana Acosta-Uribe
-All rights reserved
-Copyright: UCSB
-_
+
+___
+Pipeline by Juliana Acosta-Uribe. UCSB 2021
+___
 
 **I. PREP YOUR FILES**
 
