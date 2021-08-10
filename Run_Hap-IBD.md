@@ -50,7 +50,7 @@ map=plink.chr14.GRCh37.newID.map \
 min-seed=1.0 \
 min-extend=0.2 \
 min-output=2.0 \
-out=Cprefix.mac2.snps-only.chr14.geno.new-ID.WGS_hap-ibd 
+out=prefix.mac2.snps-only.chr14.geno.new-ID.WGS_hap-ibd 
 ```
 The hap-ibd program produces three output files: a log file, an ibd file, and an hbd file.
 
@@ -63,6 +63,6 @@ The gzip-compressed ibd file (.ibd.gz) contains IBD segments shared between indi
   
 You can use AWK to filter the IBD segments that include your locus of interest.
 ```
-awk -F "\t" '{ if (($6 <= 73603143) && ($7 >= 73690399)) { print } }' COL-900.chr14.maf0.1.id.modified-model.vcf.psen1-families.newID.vcf.WGS_hap-ibd.ibd > COL-900.chr14.maf0.1.id.modified-model.vcf.psen1-families.newID.vcf.WGS_hap-ibd.PSEN1-locus
+awk -F "\t" '{ if (($6 <= 73603143) && ($7 >= 73690399)) { print } }' prefix.mac2.snps-only.chr14.geno.new-ID.WGS_hap-ibd.ibd > prefix.mac2.snps-only.chr14.geno.new-ID.WGS_hap-ibd.PSEN1-locus
 ```
 
