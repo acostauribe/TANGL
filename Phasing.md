@@ -1,44 +1,43 @@
-##PHASING GENOMIC DATA#
+**PHASING GENOMIC DATA**
 
 
-###I. Prep your files
+**I. PREP YOUR FILES**
 
-1.1. Remove singletons and keep only biallelic sites.
+Remove singletons and keep only biallelic sites.
 Since we are taking benefits of the family structure, many individuals have Mother and Fathre ID, therefore plink categorizes these individuals as "nonfounders". I recommend to use ``--nonfounders`` to include these individulas in the allelic frequency counts.
 
 ```
-plink --bfile  --bfile <prefix> --mac 2 --snps-only just-acgt --nonfounders --make-bed --out <prefix>.mac2.snps-only
+plink --bfile  --bfile prefix --mac 2 --snps-only just-acgt --nonfounders --make-bed --out prefix.mac2.snps-only
 ```
 
 You should only phase one chromosome at a time. For our example we will be using chromosome 14, but you could do a "for loop" function to pahse all chromosomes in a sequence.
 
 ```
-plink --bfile <prefix>.mac2.snps-only --chr 14 --snps-only just-acgt --make-bed --out <prefix>.mac2.snps-only.chr14
+plink --bfile prefix.mac2.snps-only --chr 14 --snps-only just-acgt --make-bed --out prefix.mac2.snps-only.chr14
 ```
 
-Make sure your file <prefix>.mac2.snps-only.chr14.bim has the same variant identifiers as your reference panels e.g. **1000GP\_Phase3.hap.legend.sample** and **1000GP\_Phase3_chr14.hap.gz**  files
+Make sure your file prefix.mac2.snps-only.chr14.bim has the same variant identifiers as your reference panels e.g. **1000GP\_Phase3.hap.legend.sample** and **1000GP\_Phase3_chr14.hap.gz**  files
 
 You can find mutiple reference panels here [https://mathgen.stats.ox.ac.uk/impute/impute_v2.html#reference]()
 or get directly the 1000GP phase 3 here [https://mathgen.stats.ox.ac.uk/impute/1000GP_Phase3.html](). The cM genetic recombination maps are also available in the same site.
 
-###II. PHASE DATA 
+**II. PHASE DATA**
 
-####1. Check your file with SHAPEIT2  
+**1. Check your file with SHAPEIT2** 
 
 ```
 shapeit \
 -check \
 --input-ref 1000GP_Phase3_chr14.hap.gz 1000GP_Phase3_chr14.legend.gz 1000GP_Phase3.sample \
 --thread 20 \
---input-bed <prefix>.mac2.snps-only.chr14 \
+--input-bed prefix.mac2.snps-only.chr14 \
 --input-map genetic_map_chr14_combined_b37.txt \
---output-log <prefix>.mac2.snps-only.chr14.shapeit
+--output-log prefix.mac2.snps-only.chr14.shapeit
 ```
 
-####Output files:
+**Output files:**
 
-*COL-900.ADM.EUR.AFR.chr14.id.ind.me* : contains the Mendel errors at the individual level (N lines).
-
+*prefix.mac2.snps-only.chr14.shapeit.ind.me* : contains the Mendel errors at the individual level (N lines).
 The columns are:
 id: The individual id
 father_id: The father id for this individual
@@ -61,7 +60,7 @@ famID: An unique id internally assigned by SHAPEIT to each distinct family (usef
 
 For this file we have 0 mendel errors.
 
-*COL-900.ADM.EUR.AFR.chr14.id.snp.me* : contains the Mendel errors at the SNP level (L lines).
+*prefix.mac2.snps-only.chr14.shapeit.snp.me* : contains the Mendel errors at the SNP level (L lines).
 The columns are variant site ID and position, number of mendel errors, total number of duos-trios.
 If you divide the 3rd column by the last, you get the Mendel error rate. 
 
@@ -78,8 +77,7 @@ If you divide the 3rd column by the last, you get the Mendel error rate.
 
 For this file we have 0 mendel errors.
 
-
-*COL-900.ADM.EUR.AFR.chr14.id.ind.mm* : contains the individual missing rates (N lines)
+*prefix.mac2.snps-only.chr14.shapeit.ind.mm* : contains the individual missing rates (N lines)
 The first column gives the individual ID and the second the number of sites with missing data the individual contains.
 
 	id      missing
@@ -94,7 +92,7 @@ The first column gives the individual ID and the second the number of sites with
 	HG01894 72
 
 
-*COL-900.ADM.EUR.AFR.chr14.id.snp.mm* : contains the SNP missing rates and allele frequencies (L lines)
+*prefix.mac2.snps-only.chr14.shapeit.snp.mm* : contains the SNP missing rates and allele frequencies (L lines)
 The columns are:
 id: The SNP id (ex: rs id)
 position: The SNP physical position in bp
@@ -120,7 +118,7 @@ count_B_founder: The allele B count in founder haplotypes only.
 To fix the SNPs with high missingness I used the plink --geno command. Use the --nonfounder flag to do this
 
 ```
-plink --bfile <prefix>.mac2.snps-only.chr14 --geno 0.01  --nonfounders --make-bed --out <prefix>.mac2.snps-only.chr14.geno
+plink --bfile prefix.mac2.snps-only.chr14 --geno 0.01  --nonfounders --make-bed --out prefix.mac2.snps-only.chr14.geno
 ```
 
 Missalingment or missingness issues will be reported in *file.strand* and *file.strand.exclude*
@@ -135,12 +133,12 @@ shapeit \
 -check \
 --input-ref 1000GP_Phase3_chr14.hap.gz 1000GP_Phase3_chr14.legend.gz 1000GP_Phase3.sample \
 --thread 20 \
---input-bed <prefix>.mac2.snps-only.chr14.geno \
+--input-bed prefix.mac2.snps-only.chr14.geno \
 --input-map genetic_map_chr14_combined_b37.txt \
---output-log <prefix>.mac2.snps-only.chr14.geno.shapeit
+--output-log prefix.mac2.snps-only.chr14.geno.shapeit
 ```
 
-Reading genetic map in [/home/acostauribe/1000G/GeneticMaps/genetic_map_chr14_combined_b37.txt]
+Reading genetic map in [genetic_map_chr14_combined_b37.txt]
 	  * 104393 genetic positions found
 	  * #set=101046 / #interpolated=609980
 	  * Physical map [19.06 Mb -> 107.29 Mb] / Genetic map [0.00 cM -> 117.51 cM]
@@ -154,28 +152,28 @@ Checking Mendel errors...
 If everything is good, proceed to phase your data.
 
 
-####2.  Phase your data with SHAPEIT2
+**2.  Phase your data with SHAPEIT2**
 
 ```
 shapeit \
 -check \
 --input-ref 1000GP_Phase3_chr14.hap.gz 1000GP_Phase3_chr14.legend.gz 1000GP_Phase3.sample \
 --thread 20 \
---input-bed <prefix>.mac2.snps-only.chr14.geno \
+--input-bed prefix.mac2.snps-only.chr14.geno \
 --input-map genetic_map_chr14_combined_b37.txt \
 --duohmm \
 -W 5 \
 --thread 18 \
---output-max <prefix>.mac2.snps-only.chr14.geno.haps.gz \
-<prefix>.mac2.snps-only.chr14.geno.haps.gz\
---output-log <prefix>.mac2.snps-only.chr14.geno.shapeit_phased
+--output-max prefix.mac2.snps-only.chr14.geno.haps.gz \
+prefix.mac2.snps-only.chr14.geno.sample\
+--output-log prefix.mac2.snps-only.chr14.geno.shapeit_phased
 ```
 
 Output files <prefix>.mac2.snps-only.chr14.geno.haps.gz 
-<prefix>.mac2.snps-only.chr14.geno.haps.gz
+prefix.mac2.snps-only.chr14.geno.sample
 
 
-####3. Convert the haps.gz and sample into a VCF
+**3. Convert the haps.gz and sample into a VCF**
 
 unzip the haps.gz file and run:
 
