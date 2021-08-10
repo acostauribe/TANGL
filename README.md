@@ -75,14 +75,16 @@ A shell script is provided in [ADMIXTURE.sh](ADMIXTURE.sh). This script performe
 
 The best phasing results were obtained by pahsing our TANGL dataset along with the European, African and Native american genomes, and using the haplotype reference panel of the 1000GP. We used SHAPEIT (v.2.r900)[https://mathgen.stats.ox.ac.uk/genetics_software/shapeit/shapeit.html]()
 Since we have multiple related individuals, we used the parameters –duohmm and a window of 5MB (-W 5), which takes advantage of the inclusion of families, pedigree structure and the large amount of IBD shared by close relatives, leading to increased accuracy. 
-Here is a markdown of Phasing with Shapeit2
+
+  Here is a markdown of Phasing with Shapeit2
 [Phasing Tutorial](Phasing.md)
 
 **5. Identification of Identitical by Descent (IBD) segments using Hap-IBD**
 
 If any of the disease-conferring or risk-associated variants were shared by two or more unrelated individuals, we used hap-IBD v1.0 to search for identity by descent (IBD) around the locus. This software detects IBD of 2cM and highers. Hap-IBD can also detect Autozygosity (homozygosity by descent).
-Here is a markdown of detecting IBD with Hap-IBD
-  [Run_Hap-IBD.md] (Run_Hap-IBD.md)
+
+  Here is a markdown of detecting IBD with Hap-IBD
+  [Run_Hap-IBD.md](Run_Hap-IBD.md)
  
 **6. Local ancestry inference using RFMix**
 
