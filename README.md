@@ -1,6 +1,9 @@
 **These repository contains a series of scripts developed for the analyses of identity by descent (IBD) in a three-way admixed population from Colombia.** 
 
-We are provinding examples of the scripts we used at every step of the analyses we presented in our paper "A Neurodegenerative Disease Landscape of Rare Mutations in Colombia Due to Founder Effects". If you use our scripts, please cite: 
+We are provinding examples of the scripts we used at every step of the analyses we presented in our paper "A Neurodegenerative Disease Landscape of Rare Mutations in Colombia Due to Founder Effects". 
+
+If you use our scripts, please cite: 
+
 Acosta-Uribe, et al. A Neurodegenerative Disease Landscape of Rare Mutations in Colombia Due to Founder Effects. [link]
 
 We are providing a shell script for every step, and additional R and Python scripts for nice plots. The scripts need to be modified with the name of the files you are using.
