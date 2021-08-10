@@ -2,11 +2,9 @@
 
 We are provinding examples of the scripts we used at every step of the analyses we presented in our paper "A Neurodegenerative Disease Landscape of Rare Mutations in Colombia Due to Founder Effects". 
 
-If you use our scripts, please cite: 
+  If you use our scripts, please cite: \
+  Acosta-Uribe, et al. A Neurodegenerative Disease Landscape of Rare Mutations in Colombia Due to Founder Effects. [link]
 
-Acosta-Uribe, et al. A Neurodegenerative Disease Landscape of Rare Mutations in Colombia Due to Founder Effects. [link]
-
-We are providing a shell script for every step, and additional R and Python scripts for nice plots. The scripts need to be modified with the name of the files you are using.
 
 **Pipeline**
 
@@ -18,14 +16,12 @@ We are providing a shell script for every step, and additional R and Python scri
 6. Identification of Identitical by Descent (IBD) segments using Hap-IBD
 
 ________
+The TANGL dataset comprised both *related* and *unrelated* individuals. Having related individuals in the same dataset improves **Phasing** and **IBD** detection.\
+However, certain analyses such as PCA or ADMIXTURE need to be performed in unrelated individuals. If you know your dataset contains related individuals, I recommend doing some additional quality control steps using PLINK 1.9 [http://www.cog-genomics.org/plink2]().
 
-Our dataset comprised both *related* and *unrelated* individuals. Having related individuals in the same dataset improves *Phasing* and *IBD* detection.
-However, certain analyses such as PCA or ADMIXTURE need to be performed in Unrelated individuals. If you know your dataset contains related individuals, I recommend doing some additional quality control steps using PLINK 1.9 [http://www.cog-genomics.org/plink2]().
-
-First, edit your <file>.fam to reflect the Paternal and Maternal ID for each sample, and give each known family, the same Family ID (first column of <file>.fam). 
+First, edit your file.fam to reflect the Paternal and Maternal ID for each sample, and give each known family, the same Family ID (first column of file.fam).
 If the father or the mother is in the dataset, their Sample ID needs to match the Father or Mother ID of their offspring.
 Once your <file>.fam reflects known relationships, check your file for "mendel errors"
-
   
 Set mendel errors to missing, (this will be useful for the phasing steps as well)
 ```
@@ -37,7 +33,7 @@ plink --bfile <file-prefix>.me --mendel-multigen --set-me-missing  --make-bed --
 
 **1. Identify relatedness between samples**
 
-We used KING to verify diclosed relationships (e.g. parent-offsping, full-siblings etc)[https://www.kingrelatedness.com/manual.shtml]() 
+We used KING to verify diclosed relationships (e.g. parent-offsping, full-siblings etc)[https://www.kingrelatedness.com/manual.shtml]() \
 Ideally, the relatedness coefficient should match the disclosed relationship.  
 
 A subset of unrelated samples was selected by keeping only the proband of each family. Once we extracted a single individual per family, we performed another check for criptic relatedness. Only sample pairs with kinship coefficient less than 0.044 should be retained 
@@ -57,7 +53,7 @@ For PCA, we used the subset of unrelated samples and performed LD-pruning using 
   ./PCA_with_MAF_restrictions.sh
   ```
 
-The PCA results colored according to ancestry were plotted using the PCAviz package for R, take a look at the R markdown [RunningPCAviz.Rmd](RunningPCAviz.Rmd)
+The PCA results colored according to ancestry were plotted using the PCAviz package for R, take a look at the R markdown [RunningPCAviz.Rmd](RunningPCAviz.Rmd)\
 You can also make nice PCA images and a 3D PCA using the R script [3D_PCA.R](3D_PCA.R)  
 ![ Alt text](3dAnimatedScatterplot.gif) / ! [](3dAnimatedScatterplot.gif)  
   
@@ -77,21 +73,24 @@ A shell script is provided in [ADMIXTURE.sh](ADMIXTURE.sh). This script performe
 **4. Phasing genomes using SHAPEIT2**
 
 The best phasing results were obtained by pahsing our TANGL dataset along with the European, African and Native american genomes, and using the haplotype reference panel of the 1000GP. We used SHAPEIT (v.2.r900)[https://mathgen.stats.ox.ac.uk/genetics_software/shapeit/shapeit.html]()
+  
 Since we have multiple related individuals, we used the parameters –duohmm and a window of 5MB (-W 5), which takes advantage of the inclusion of families, pedigree structure and the large amount of IBD shared by close relatives, leading to increased accuracy. 
 
   Here is a markdown of Phasing with Shapeit2
 [Phasing Tutorial](Phasing.md)
 
+  
 **5. Identification of Identitical by Descent (IBD) segments using Hap-IBD**
 
 If any of the disease-conferring or risk-associated variants were shared by two or more unrelated individuals, we used hap-IBD v1.0 to search for identity by descent (IBD) around the locus. This software detects IBD of 2cM and highers. Hap-IBD can also detect Autozygosity (homozygosity by descent). [https://github.com/browning-lab/hap-ibd]()
 
   Here is a markdown of detecting IBD with Hap-IBD
   [Run_Hap-IBD.md](Run_Hap-IBD.md)
- 
+
+  
 **6. Local ancestry inference using RFMix**
 
-We implemented protocols similar to those previously developed for ancestry estimation in admixed populations. 
+We implemented protocols similar to those previously developed for ancestry estimation in admixed populations. \
 We recommend the following repository to identify local ancestry [https://github.com/armartin/ancestry_pipeline.git]()
 
 To determine the carrier haplotype and local ancestry of a rare variant of interest, we used PLINK to identify other single nucleotide variants (SNVs) in linkage disequilibrium with the variant of interest. Then, we used these tags to identify the carrier haplotypes in the phased dataset, and searched for the local ancestry of the specific locus in the RFMix output.
