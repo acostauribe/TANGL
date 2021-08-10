@@ -1,8 +1,5 @@
 **Running Hap-IBD to detect shared IBD segments**
 
-Zhou, Y., Browning, S.R. and Browning, B.L., 2020. A fast and simple method for detecting identity by descent segments in large-scale data. 
-The American Journal of Human Genetics. [https://github.com/browning-lab/hap-ibd]()
-
 Install as recommended. I installed it in acostauribe/bin/hap-ibd.jar 
 
 Data Parameters: 
