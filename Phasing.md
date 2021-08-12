@@ -157,23 +157,20 @@ If everything is good, proceed to phase your data.
 
 **2.  Phase your data with SHAPEIT2**
 
+
 ```
 shapeit \
--check \
 --input-ref 1000GP_Phase3_chr14.hap.gz 1000GP_Phase3_chr14.legend.gz 1000GP_Phase3.sample \
---thread 20 \
 --input-bed prefix.mac2.snps-only.chr14.geno \
 --input-map genetic_map_chr14_combined_b37.txt \
---duohmm \
--W 5 \
---thread 18 \
---output-max prefix.mac2.snps-only.chr14.geno.haps.gz \
-prefix.mac2.snps-only.chr14.geno.sample\
+--duohmm \ 	#Useful for phasing complex pedigrees
+-W 5 \ 		#A larger phasing window improves phasing when your population has significant IBD
+--thread 20 \ 	# you can use as many threads as you want
+--output-max prefix.mac2.snps-only.chr14.geno.haps.gz prefix.mac2.snps-only.chr14.geno.sample \
 --output-log prefix.mac2.snps-only.chr14.geno.shapeit_phased
 ```
 
-Output files <prefix>.mac2.snps-only.chr14.geno.haps.gz 
-prefix.mac2.snps-only.chr14.geno.sample
+Output files : *prefix.mac2.snps-only.chr14.geno.haps.gz* and *prefix.mac2.snps-only.chr14.geno.sample*
 
 
 **3. Convert the haps.gz and sample into a VCF**
@@ -182,6 +179,6 @@ unzip the haps.gz file and run:
 
 ```
 shapeit -convert \
---input-haps <prefix>.mac2.snps-only.chr14.geno \
---output-vcf <prefix>.mac2.snps-only.chr14.geno.vcf
+--input-haps prefix.mac2.snps-only.chr14.geno \
+--output-vcf prefixmac2.snps-only.chr14.geno.vcf
 ```
