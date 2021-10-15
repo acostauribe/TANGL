@@ -46,6 +46,7 @@ king -b <file-prefix>.bed --related --degree 3
 **2. Principal Component Analysis (PCA)**
 
 For PCA, we used the subset of unrelated samples and performed LD-pruning using PLINK to exclude variants with an r2 value of greater than 0.2 with any other SNP within a 50-SNP sliding window, advancing by 10 SNPs each time. Then, we performed a PCA using the smartpca package from EIGENSOFT(v7.2.1) [https://github.com/DReichLab/EIG/archive/v7.2.1.tar.gz]. You can open the script [PCA_with_MAF_restrictions.sh](PCA_with_MAF_restrictions.sh) in any text editor and set the minor allele frequency (MAF) thresholds you want for your analyses. 
+
   ```
   chmod u+x PCA_with_MAF_restrictions.sh
   ```
@@ -76,7 +77,7 @@ The best phasing results were obtained by pahsing our TANGL dataset along with t
   
 Since we have multiple related individuals, we used the parameters –duohmm and a window of 5MB (-W 5), which takes advantage of the inclusion of families, pedigree structure and the large amount of IBD shared by close relatives, leading to increased accuracy. 
 
-  Here is a markdown of Phasing with Shapeit2
+Here is a markdown of Phasing with Shapeit2
 [Phasing Tutorial](Phasing.md)
 
   
@@ -84,10 +85,11 @@ Since we have multiple related individuals, we used the parameters –duohmm and
 
 If any of the disease-conferring or risk-associated variants were shared by two or more unrelated individuals, we used hap-IBD v1.0 to search for identity by descent (IBD) around the locus. This software detects IBD of 2cM and highers. Hap-IBD can also detect Autozygosity (homozygosity by descent). [https://github.com/browning-lab/hap-ibd]()
 
-  Here is a markdown of detecting IBD with Hap-IBD
-  [Run_Hap-IBD.md](Run_Hap-IBD.md)
+Here is a markdown of detecting IBD with Hap-IBD
+[Run_Hap-IBD.md](Run_Hap-IBD.md)
 
-  
+And a series of Python scripts to plot overlapping IBD segments over a locus of interest  
+ 
 **6. Local ancestry inference using RFMix**
 
 We implemented protocols similar to those previously developed for ancestry estimation in admixed populations. \
