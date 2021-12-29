@@ -4,6 +4,8 @@ We are provinding examples of the scripts we used at every step of the analyses 
 
   If you use our scripts, please cite: \
   Acosta-Uribe, et al. A Neurodegenerative Disease Landscape of Rare Mutations in Colombia Due to Founder Effects. [link]
+[![DOI](https://zenodo.org/badge/394373254.svg)](https://zenodo.org/badge/latestdoi/394373254)
+
 
 
 **Pipeline**
@@ -97,3 +99,4 @@ We recommend the following repository to identify local ancestry [https://github
 
 To determine the carrier haplotype and local ancestry of a rare variant of interest, we used PLINK to identify other single nucleotide variants (SNVs) in linkage disequilibrium with the variant of interest. Then, we used these tags to identify the carrier haplotypes in the phased dataset, and searched for the local ancestry of the specific locus in the RFMix output.
 
+ 
