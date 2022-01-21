@@ -10,7 +10,7 @@ Remove singletons and keep only biallelic sites.
 Since we are taking benefits of the family structure, many individuals have Mother and Fathre ID, therefore plink categorizes these individuals as "nonfounders". I recommend to use ``--nonfounders`` to include these individulas in the allelic frequency counts.
 
 ```
-plink --bfile  --bfile prefix --mac 2 --snps-only just-acgt --nonfounders --make-bed --out prefix.mac2.snps-only
+plink --bfile prefix --mac 2 --snps-only just-acgt --nonfounders --make-bed --out prefix.mac2.snps-only
 ```
 
 You should only phase one chromosome at a time. For our example we will be using chromosome 14, but you could do a "for loop" function to pahse all chromosomes in a sequence.
