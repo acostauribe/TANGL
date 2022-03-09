@@ -1,10 +1,11 @@
 **These repository contains a series of scripts developed for the analyses of identity by descent (IBD) in a three-way admixed population from Colombia.** 
+[![DOI](https://zenodo.org/badge/394373254.svg)](https://zenodo.org/badge/latestdoi/394373254)
 
 We are provinding examples of the scripts we used at every step of the analyses we presented in our paper "A Neurodegenerative Disease Landscape of Rare Mutations in Colombia Due to Founder Effects". 
 
   If you use our scripts, please cite: \
   Acosta-Uribe, J., Aguillón, D., Cochran, J.N. et al. A neurodegenerative disease landscape of rare mutations in Colombia due to founder effects. Genome Med 14, 27 (2022). https://doi.org/10.1186/s13073-022-01035-9 [link]
-[![DOI](https://zenodo.org/badge/394373254.svg)](https://zenodo.org/badge/latestdoi/394373254)
+
 
 
 
