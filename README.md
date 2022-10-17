@@ -1,5 +1,4 @@
-**The Admixture and Neurodegeneration Genomic Landscape (TANGL) Study**  
-**This repository contains a series of scripts developed for the analyses of identity by descent (IBD) in a three-way admixed population from Colombia.** 
+**The Admixture and Neurodegeneration Genomic Landscape (TANGL) Study repository contains a series of scripts developed for the analyses of identity by descent (IBD) in a three-way admixed population from Colombia.** 
 [![DOI](https://zenodo.org/badge/394373254.svg)](https://zenodo.org/badge/latestdoi/394373254)
 
 We are provinding examples of the scripts we used at every step of the analyses we presented in our paper "A Neurodegenerative Disease Landscape of Rare Mutations in Colombia Due to Founder Effects". 
