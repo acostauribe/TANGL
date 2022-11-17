@@ -95,8 +95,9 @@ And a series of Python scripts to plot overlapping IBD segments over a locus of 
  
 **6. Local ancestry inference using RFMix**
 
-We implemented protocols similar to those previously developed for ancestry estimation in admixed populations. \
-We recommend the following repository to identify local ancestry [https://github.com/armartin/ancestry_pipeline.git]()
+We implemented protocols similar to those previously developed for ancestry estimation in admixed populations.[https://github.com/armartin/ancestry_pipeline.git]()
+
+As of November 2022, we recommend to use RFMIX2 [https://github.com/slowkoni/rfmix]() to estimate local ancestry. Accuracy and speed are highly improved in this new release
 
 To determine the carrier haplotype and local ancestry of a rare variant of interest, we used PLINK to identify other single nucleotide variants (SNVs) in linkage disequilibrium with the variant of interest. Then, we used these tags to identify the carrier haplotypes in the phased dataset, and searched for the local ancestry of the specific locus in the RFMix output.
 
