@@ -20,7 +20,7 @@ We are provinding examples of the scripts we used at every step of the analyses 
 
 ________
 The TANGL dataset comprised both *related* and *unrelated* individuals. Having related individuals in the same dataset improves **Phasing** and **IBD** detection.\
-However, certain analyses such as PCA or ADMIXTURE need to be performed in unrelated individuals. If you know your dataset contains related individuals, I recommend doing some additional quality control steps using PLINK 1.9 [http://www.cog-genomics.org/plink2]().
+However, certain analyses such as PCA or ADMIXTURE need to be performed in unrelated individuals. If you know your dataset contains related individuals, I recommend doing some additional quality control steps using PLINK 1.9 [http://www.cog-genomics.org/plink2](http://www.cog-genomics.org/plink2).
 
 First, edit your file.fam to reflect the Paternal and Maternal ID for each sample, and give each known family, the same Family ID (first column of file.fam).
 If the father or the mother is in the dataset, their Sample ID needs to match the Father or Mother ID of their offspring.
@@ -36,7 +36,7 @@ plink --bfile <file-prefix>.me --mendel-multigen --set-me-missing  --make-bed --
 
 **1. Identify relatedness between samples**
 
-We used KING to verify diclosed relationships (e.g. parent-offsping, full-siblings etc)[https://www.kingrelatedness.com/manual.shtml]() \
+We used KING to verify diclosed relationships (e.g. parent-offsping, full-siblings etc)[https://www.kingrelatedness.com/manual.shtml](https://www.kingrelatedness.com/manual.shtml) \
 Ideally, the relatedness coefficient should match the disclosed relationship.  
 
 A subset of unrelated samples was selected by keeping only the proband of each family. Once we extracted a single individual per family, we performed another check for criptic relatedness. Only sample pairs with kinship coefficient less than 0.044 should be retained 
@@ -64,7 +64,7 @@ You can also make nice PCA images and a 3D PCA using the R script [3D_PCA.R](3D_
   
 **3. Estimation of global ancestry using ADMIXTURE**
 
-We calculated global ancestry using ADMIXTURE (v.1.3.0) [https://dalexander.github.io/admixture/]() with the same LD-prunned dataset we generated for the PCA.
+We calculated global ancestry using ADMIXTURE (v.1.3.0) [https://dalexander.github.io/admixture/](https://dalexander.github.io/admixture/) with the same LD-prunned dataset we generated for the PCA.
 A shell script is provided in [ADMIXTURE.sh](ADMIXTURE.sh). This script performes an unsupervised analysis modeling from one to ten ancestral populations (K = 1 – 10) using the random seed option and replicating each calculation 20 times. We selected the run with the best Loglikehood value for each K and compared the Cross Validation (cv) error values to determine the model with the lowest cv value. 
   ```
   chmod u+x ADMIXTURE.sh
@@ -76,7 +76,7 @@ A shell script is provided in [ADMIXTURE.sh](ADMIXTURE.sh). This script performe
  
 **4. Phasing genomes using SHAPEIT2**
 
-The best phasing results were obtained by pahsing our TANGL dataset along with the European, African and Native american genomes, and using the haplotype reference panel of the 1000GP. We used SHAPEIT (v.2.r900)[https://mathgen.stats.ox.ac.uk/genetics_software/shapeit/shapeit.html]()
+The best phasing results were obtained by pahsing our TANGL dataset along with the European, African and Native american genomes, and using the haplotype reference panel of the 1000GP. We used SHAPEIT (v.2.r900)[https://mathgen.stats.ox.ac.uk/genetics_software/shapeit/shapeit.html](https://mathgen.stats.ox.ac.uk/genetics_software/shapeit/shapeit.html)
   
 Since we have multiple related individuals, we used the parameters –duohmm and a window of 5MB (-W 5), which takes advantage of the inclusion of families, pedigree structure and the large amount of IBD shared by close relatives, leading to increased accuracy. 
 
@@ -86,7 +86,7 @@ Here is a markdown of Phasing with Shapeit2
   
 **5. Identification of Identitical by Descent (IBD) segments using Hap-IBD**
 
-If any of the disease-conferring or risk-associated variants were shared by two or more unrelated individuals, we used hap-IBD v1.0 to search for identity by descent (IBD) around the locus. This software detects IBD of 2cM and highers. Hap-IBD can also detect Autozygosity (homozygosity by descent). [https://github.com/browning-lab/hap-ibd]()
+If any of the disease-conferring or risk-associated variants were shared by two or more unrelated individuals, we used hap-IBD v1.0 to search for identity by descent (IBD) around the locus. This software detects IBD of 2cM and highers. Hap-IBD can also detect Autozygosity (homozygosity by descent). [https://github.com/browning-lab/hap-ibd](https://github.com/browning-lab/hap-ibd)
 
 Here is a markdown of detecting IBD with Hap-IBD
 [Run_Hap-IBD.md](Run_Hap-IBD.md)
@@ -95,9 +95,9 @@ And a series of Python scripts to plot overlapping IBD segments over a locus of 
  
 **6. Local ancestry inference using RFMix**
 
-We implemented protocols similar to those previously developed for ancestry estimation in admixed populations.[https://github.com/armartin/ancestry_pipeline.git]()
+We implemented protocols similar to those previously developed for ancestry estimation in admixed populations.[https://github.com/armartin/ancestry_pipeline.git](https://github.com/armartin/ancestry_pipeline.git)
 
-As of November 2022, we recommend to use RFMIX2 [https://github.com/slowkoni/rfmix]() to estimate local ancestry. Accuracy and speed are highly improved in this new release
+As of November 2022, we recommend to use RFMIX2 [https://github.com/slowkoni/rfmix](https://github.com/slowkoni/rfmix) to estimate local ancestry. Accuracy and speed are highly improved in this new release
 
 To determine the carrier haplotype and local ancestry of a rare variant of interest, we used PLINK to identify other single nucleotide variants (SNVs) in linkage disequilibrium with the variant of interest. Then, we used these tags to identify the carrier haplotypes in the phased dataset, and searched for the local ancestry of the specific locus in the RFMix output.
 
